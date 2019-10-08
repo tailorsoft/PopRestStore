@@ -10,9 +10,9 @@
     <a class="customer-link">${product.productName}</a>
 </div>
 <div class="container container-text mt-1">
-    <#if addedCorrect?? && addedCorrect == 'true'>
+    <#if addedCorrect??>
         <div class="alert alert-primary mt-3 mb-3" role="alert">
-            <i class="far fa-check-square"></i> You added a ${product.productName} to your shopping cart.
+            <i class="far fa-check-square"></i> You added ${addedCorrect} of ${product.productName} to your shopping cart.
             <a class="float-right" href="/store/d#/checkout">Go to Checkout <i class="fas fa-arrow-right"></i></a>
         </div>
     </#if>
@@ -99,16 +99,6 @@
                         <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
-                        <span class="product-description">Quantity</span>
-                        <select class="form-control text-gdark" name="quantity" id="quantity">
-                            <#if productQuantity.productQuantity??>
-                                <#list 1..productQuantity.productQuantity as x>
-                                    <option value="${x}">${x}</option>
-                                </#list>
-                            <#else>
-                                <option value="0">0</option> 
-                            </#if>
-                        </select>
                     </div>
                     <#if isVirtual>
                         <div class="form-group col">
@@ -117,12 +107,12 @@
                             <#list featureTypes![] as featureType>
                                 ${featureType.description!}
                                 <#assign variants = variantsList.listFeatures.get(featureType)>
-                                <select class="form-control" id="variantProduct${featureType?index}" required>
+                                <select class="form-control featureSelect" name="${featureType.productFeatureTypeEnumId}" id="variantProduct${featureType?index}" required>
                                     <option value="" disabled selected>
                                         Select an Option 
                                     </option>
                                     <#list variants![] as variant>
-                                        <option value="${variant.abbrev!}">
+                                        <option value="${variant.productFeatureId}">
                                             ${variant.description!} 
                                         </option>
                                     </#list>
@@ -131,13 +121,16 @@
                         </div>
                     </#if>
                 </div>
-                <#if inStock>
+                <div id="addToCartSection">
+                    <span class="product-description">Quantity</span>
+                    <input type="text" class="form-control text-gdark" name="quantity" id="quantity" value="${addedCorrect!1}" />
                     <button onclick="onClickAddButton();" id="cartAdd" class="btn cart-form-btn col" type="submit" onclick="">
                         <i class="fa fa-shopping-cart"></i> Add to Cart
                     </button>
-                <#else>
+                </div>
+                <div id="outOfStock">
                     <h5 class="text-center">Out of Stock</h5>
-                </#if>
+                </div>
             </form>
         </div>
     </div>
@@ -233,10 +226,12 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="/store/assets/pdp.js"></script>
 <script>
     var prodImageUrl = "/store/content/productImage/";
     var $productImageLarge = document.getElementById("product-image-large");
+    var variants = ${Static["groovy.json.JsonOutput"].toJson((variantsList.variants)![])}
+    var selectedProductId = '${selectedOptionId!''}';
 
     document.body.onload = function() {
         <#if isVirtual>
@@ -254,6 +249,7 @@
                 });
             </#list>
         </#if> 
+        initializeFeatureSelects();
     }
 
     function onClickAddButton() {

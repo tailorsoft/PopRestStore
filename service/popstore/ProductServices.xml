@@ -354,6 +354,7 @@ along with this software (see the LICENSE.md file). If not, see
                 <description>We use this flag in UI to emphasis discounted products if they are variants</description>
             </parameter>
             <parameter name="listFeatures"/>
+            <parameter name="variants" type="List" />
         </out-parameters>
         <actions>
             <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
@@ -389,7 +390,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <entity-find-one entity-name="mantle.product.feature.ProductFeature" value-field="productFeature" cache="true">
                         <field-map field-name="productFeatureId" from="variantProductAssoc.productFeatureId"/>
                     </entity-find-one>
-                    <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:variantProductAssoc.toProductId]"/>
+                    <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:variantProductAssoc.toProductId]" out-map-add-to-existing="false"/>
                     <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
                         <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
                     </entity-find-one>
@@ -434,6 +435,25 @@ along with this software (see the LICENSE.md file). If not, see
                             prices:selectedPrices])
                         }
                         priceSet = null
+
+
+                        // Build the unique variant list
+                        variants = variants ?: []
+                        def variant = variants.find{it.productId == variantProductAssoc.toProductId}
+                        
+                        if (!variant) {
+                            variant = [
+                                productId: variantProductAssoc.toProductId, 
+                                quantity: productQuantity.productQuantity ?: 0,
+                                prices: selectedPrices,
+                                features: [:]
+                            ]
+                           variants << variant
+                        }
+
+                        // Populate the variant with the features
+                        variant.features[productFeature.productFeatureTypeEnumId] = productFeature.productFeatureId;
+
                     ]]></script>
                 </iterate>
 
