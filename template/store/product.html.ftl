@@ -96,48 +96,39 @@
                         -->
                     </div>
                     <div class="form-group col">
-                        <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
+                        <input type="hidden" name="productId" id="productId" />
                         <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
                         <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
-                        <span class="product-description">Quantity</span>
-                        <select class="form-control text-gdark" name="quantity" id="quantity">
-                            <#if productQuantity.productQuantity??>
-                                <#list 1..productQuantity.productQuantity as x>
-                                    <option value="${x}">${x}</option>
-                                </#list>
-                            <#else>
-                                <option value="0">0</option> 
-                            </#if>
-                        </select>
                     </div>
-                    <#if isVirtual>
-                        <div class="form-group col">
-                            <#assign featureTypes = variantsList.listFeatures.keySet()>
-                            <#assign arrayIds = [] />
-                            <#list featureTypes![] as featureType>
-                                ${featureType.description!}
-                                <#assign variants = variantsList.listFeatures.get(featureType)>
-                                <select class="form-control" id="variantProduct${featureType?index}" required>
-                                    <option value="" disabled selected>
-                                        Select an Option 
-                                    </option>
-                                    <#list variants![] as variant>
-                                        <option value="${variant.abbrev!}">
-                                            ${variant.description!} 
-                                        </option>
-                                    </#list>
-                                </select>
-                            </#list>
-                        </div>
-                    </#if>
+                    <div class="form-group col">
+                        <#assign features = (variantsList.listFeatures.keySet())![]>
+                        <#list features as featureType>
+                            ${featureType.description!} 
+                            <#assign featureOpts = variantsList.listFeatures.get(featureType)>
+                            <select class="form-control featureSelect" name="${featureType.enumId}" required>
+                                <option value="" disabled selected>
+                                    Select an Option 
+                                </option>
+                                <#list featureOpts![] as opt>
+                                <option value="${opt.productFeatureId}">
+                                    ${opt.description!}  
+                                </option>
+                                </#list>
+                            </select>
+                        </#list>
+
+                        <div id="addToCartSection">
+                            Quantity
+                            <input type="text" name="quantity" id="quantity" class="form-control text-gdark">
+                            <button onclick="onClickAddButton();" id="cartAddButton" class="form-control btn cart-form-btn" type="submit" onclick="">
+                                <i class="fa fa-shopping-cart"></i> Add to Cart
+                            </button>
+                        </div> 
+                    </div> 
                 </div>
-                <#if inStock>
-                    <button onclick="onClickAddButton();" id="cartAdd" class="btn cart-form-btn col" type="submit" onclick="">
-                        <i class="fa fa-shopping-cart"></i> Add to Cart
-                    </button>
-                <#else>
-                    <h5 class="text-center">Out of Stock</h5>
-                </#if>
+
+                
+                <h5 class="text-center" id="outOfStock" >Out of Stock</h5>
             </form>
         </div>
     </div>
@@ -233,42 +224,66 @@
         </div>
     </div>
 </div>
-
 <script>
-    var prodImageUrl = "/store/content/productImage/";
-    var $productImageLarge = document.getElementById("product-image-large");
+    var variants = ${Static["groovy.json.JsonOutput"].toJson((variantsList.variantOptions)![])}
+    var selectedProductId = '${selectedOptionId!''}';
 
     document.body.onload = function() {
-        <#if isVirtual>
-            var productAvailability = ${productAvailability?replace('=',':')};
-            var variantIdList = [];
-            <#list 0..variantsList.listFeatures.keySet()?size - 1  as x>
-                $('#variantProduct${x}').on('change', function() {
-                    var productVariantId = $('#productId').val();
-                    variantIdList[${x}] = this.value;
-                    if(typeof(variantIdList[1]) != 'undefined') {
-                        productVariantId = productVariantId + '_' + variantIdList[1] + '_' + variantIdList[0];
-                    } else {
-                        productVariantId = productVariantId + '_' + variantIdList[0];
-                    }
-                });
-            </#list>
-        </#if> 
+        $(".featureSelect").change(function() {
+            applyFeatureFilters();
+        });
+
+        
+
+        var selectedProducts = variants.filter(function(v){return v.productId == selectedProductId});
+        if (selectedProducts.length == 1) {
+            $( ".featureSelect" ).each(function() {
+                var selectedOption = selectedProducts[0][this.name];
+                console.log(this.name+":"+selectedOption);
+                $(this).find('option[value="'+selectedOption+'"]').attr("selected",true);
+            });
+        } else {
+            var haveQuantity = variants.filter(function(v){return v.quantity > 0});
+            if (haveQuantity) {
+                $("#outOfStock").hide();
+            }
+
+            
+            if (variants.length > 0) {
+                $("#addToCartSection").hide();
+            }
+        }
     }
+
+
+    function applyFeatureFilters() {
+        var filtered = variants.slice();
+        $( ".featureSelect" ).each(function( index ) {
+            var combo = this;
+            // ignore selects that have not been set
+            if (!combo.value)
+                return; 
+            filtered = filtered.filter(function(variant) {
+                return variant[combo.name] == combo.value;
+            })
+        });
+
+        // If just one variant remains, show/hide add to cart buttons
+        if (filtered.length == 1) {
+            if (filtered[0].quantity > 0) {
+                $("#addToCartSection").show();
+                $("#outOfStock").hide();
+                $("#productId").val(filtered[0].productId);
+            } else {
+                $("#addToCartSection").hide();
+                $("#outOfStock").show();
+                $("#productId").val('');
+            }
+        }
+    }
+    
 
     function onClickAddButton() {
         $('#spinner').show();
-    }
-
-    function changeLargeImage(productContentId) { $productImageLarge.src = prodImageUrl + productContentId; }
-    //Default image
-    <#if product.contentList?has_content && imgExists>
-        changeLargeImage("${product.contentList[0].productContentId}");
-    <#else>
-        $productImageLarge.src = "/store/assets/default.png";
-    </#if>
-    function setStarNumber(number) {
-        var productRating = document.getElementById("productRating");
-        productRating.value = number;
     }
 </script>

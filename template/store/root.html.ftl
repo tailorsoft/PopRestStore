@@ -61,7 +61,5 @@
         });
     });
 </script>
-    <#-- for scripts/etc from d.xml or others, ie client rendered part of site that needs more JS -->
-    <#if footerScriptText?has_content>${footerScriptText}</#if>
 </body>
 </html>

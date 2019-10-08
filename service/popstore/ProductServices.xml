@@ -105,23 +105,17 @@ along with this software (see the LICENSE.md file). If not, see
         </actions>
     </service>
 
-    <service verb="get" noun="ProductQuantity">
+    <service verb="get" noun="AvailableToPromiseTotal">
         <in-parameters>
             <parameter name="productId" required="true"/>
         </in-parameters>
         <out-parameters>
-            <parameter name="productQuantity"/>
+            <parameter name="availableToPromiseTotal"/>
         </out-parameters>
         <actions>
-            <entity-find-one entity-name="mantle.product.asset.AssetAndDetail" value-field="asset">
-                <field-map field-name="productId" from="productId"/>
-                <field-map field-name="statusId" from="'AstAvailable'"/>
-                <field-map field-name="assetTypeEnumId" from="'AstTpInventory'"/>
-            </entity-find-one>
-            <if condition="!asset">
-                <return message="Asset not found"/>
-            </if>
-            <set field="productQuantity" from="asset.quantityOnHandTotal ? asset.quantityOnHandTotal : 0"/>
+            <service-call name="popstore.StoreServices.get#ProductStoreIdFromHostName" in-map="[requestHostName:ec.web.getHostName(false)]" out-map="context" />
+            <set field="productStoreId" value="${productStoreId ?: 'POPC_DEFAULT'}"/>
+            <service-call name="mantle.product.AssetServices.get#AvailableByStore" in-map="context" out-map="context" />     
         </actions>
     </service>
 
@@ -130,6 +124,7 @@ along with this software (see the LICENSE.md file). If not, see
             Create collection of product ids with availability flag.
         </description>
         <in-parameters>
+            <parameter name="productId" required="true"/>
             <parameter name="productStoreId" required="true"/>
         </in-parameters>
         <out-parameters>
@@ -358,8 +353,7 @@ along with this software (see the LICENSE.md file). If not, see
         <actions>
             <entity-find-one entity-name="mantle.product.Product" value-field="product"/>
 
-            <set field="variantOptions" type="NewMap" value="null"/>
-            <script>variantOptions = new HashMap()</script>
+            <set field="variantOptions" type="List" from="[]"/>
             <set field="minimalPrice" type="BigDecimal" value="0"/>
             <set field="maximalPrice" type="BigDecimal" value="0"/>
             <set field="isDiscounted" type="Boolean" value="false"/>
@@ -373,8 +367,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <econdition field-name="productId" from="product.productId"/>
                     <date-filter/>
                 </entity-find>
-                <set field="listFeatures" type="NewMap" value="null"/>
-                <script>listFeatures = new HashMap()</script>
+                <set field="listFeatures" type="NewMap" from="[:]"/>
                 <iterate list="assocs" entry="variantProductAssoc">
                     <!-- find variant price first -->
                     <service-call name="mantle.product.PriceServices.get#ProductPrice" out-map="priceSet"
@@ -389,14 +382,11 @@ along with this software (see the LICENSE.md file). If not, see
                     <entity-find-one entity-name="mantle.product.feature.ProductFeature" value-field="productFeature" cache="true">
                         <field-map field-name="productFeatureId" from="variantProductAssoc.productFeatureId"/>
                     </entity-find-one>
-                    <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:variantProductAssoc.toProductId]"/>
-                    <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureType" cache="true">
+                    <set field="availableToPromiseTotal" value="0" />
+                    <service-call name="popstore.ProductServices.get#AvailableToPromiseTotal" out-map="context" in-map="[productId:variantProductAssoc.toProductId]"/>
+                    <entity-find-one entity-name="moqui.basic.Enumeration" value-field="featureEnum" cache="true">
                         <field-map field-name="enumId" from="productFeature.productFeatureTypeEnumId"/>
                     </entity-find-one>
-                    <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
-                        description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
-                    <set field="content" from="[productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                        description:featureType.description]"/>
                     <script><![CDATA[
                         selectedPrices = (priceSet.price != null && priceSet != 0) ? priceSet : mainPriceSet
                         // we use this flag in UI to emphasis discounted products but important to know if any of variants of discounted
@@ -404,41 +394,42 @@ along with this software (see the LICENSE.md file). If not, see
                             isDiscounted = (selectedPrices.price && selectedPrices.listPrice) ? selectedPrices.price < selectedPrices.listPrice : false
                         }
                         
-                        def featureSet = listFeatures.get(content)
-                        if (!featureSet) {
-                            listFeatures.put(content, 
-                            [[productFeatureId:productFeature.productFeatureId, 
-                            productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                            description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices]])
-                        } else {
-                            boolean isItemInList = false
-                            for(int i=0; i < featureSet.size(); i++) {
-                                if(featureSet.get(i).productFeatureId.equals(productFeature.productFeatureId)) {
-                                    isItemInList = true
-                                    break
-                                } 
-                            }
-                            if(!isItemInList) {
-                                featureSet.add([productFeatureId:productFeature.productFeatureId, 
-                                productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                                description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices])
-                            }
+
+                        // Build the unique feature set
+                        def featureSet = listFeatures.get(featureEnum) ?: []
+                        if (!featureSet.find{it -> it.productFeatureId == productFeature.productFeatureId}) {
+                            featureSet.add([
+                                productFeatureId: productFeature.productFeatureId, 
+                                description: productFeature.description, 
+                                abbrev: productFeature.abbrev, 
+                                price: selectedPrices
+                            ])
+                        }
+                        listFeatures[featureEnum] = featureSet;
+
+                        // Build the unique variant list
+                        def variant = variantOptions.find{it.productId == variantProductAssoc.toProductId}
+                        
+                        if (!variant) {
+                            variant = [
+                                productId: variantProductAssoc.toProductId, 
+                                quantity: availableToPromiseTotal ?: 0
+                                //,prices: selectedPrices
+                            ]
+                           variantOptions << variant
                         }
 
-                        def optionSet = variantOptions.get(item)
-                        if (!optionSet) {
-                            variantOptions.put(item, [[productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices]])
-                        } else {
-                            optionSet.add([productId: variantProductAssoc.toProductId, description:productFeature.description, quantity: productQuantity.productQuantity,
-                            prices:selectedPrices])
-                        }
+                        variant[productFeature.productFeatureTypeEnumId] = productFeature.productFeatureId;
+
+                        
+
                         priceSet = null
                     ]]></script>
                 </iterate>
 
                 <!-- sort variants by price and store minimal price -->
                 <script><![CDATA[
+                    /*
                     variantOptions.each{k, v ->
                         Collections.sort(v, new Comparator<Map>() {
                             int compare(Map m1, Map m2) {
@@ -450,6 +441,7 @@ along with this software (see the LICENSE.md file). If not, see
                         minimalPrice = v.get(0).prices.price
                         maximalPrice = v.get(v.size() - 1).prices.price
                     }
+                    */
                 ]]></script>
 
                 <else>
@@ -457,6 +449,10 @@ along with this software (see the LICENSE.md file). If not, see
                     <set field="maximalPrice" type="BigDecimal" from="mainPriceSet.price"/>
                 </else>
             </if>
+            <log message="variantOptions: ${variantOptions}" />
+            <log message="listFeatures: ${listFeatures}" />
+
+            
         </actions>
     </service>
 

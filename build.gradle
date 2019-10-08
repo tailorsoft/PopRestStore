@@ -42,3 +42,23 @@ task build {
     dependsOn combineBaseJs
     dependsOn minifyCombined
 }
+
+task createComponent << {
+    exec {
+        if (!project.hasProperty('componentName')) 
+            logger.lifecycle("No name property specified (use -PcomponentName=...) not running")
+
+
+        def d = projectDir.toString() + '/../' + componentName
+        logger.lifecycle("Creating component in : ${d}")
+
+    
+        mkdir(d)
+        mkdir(d+'/data')
+        mkdir(d+'/entity')
+        mkdir(d+'/screen')
+        mkdir(d+'/script')
+        mkdir(d+'/service')
+    }
+}
+

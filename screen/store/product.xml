@@ -20,6 +20,17 @@ along with this software (see the LICENSE.md file). If not, see
 
     <transition name="addToCart">
         <actions>
+            <service-call name="popstore.ProductServices.get#ProductInfo" in-map="context" out-map="info"  />
+            <service-call name="mantle.product.AssetServices.get#AvailableByStore" in-map="context" out-map="info" out-map-add-to-existing="true" />
+            <script>
+                ec.web.sendJsonResponse(info);
+            </script>
+        </actions>
+        <default-response type="none"/>
+    </transition>
+
+    <transition name="addToCart">
+        <actions>
             <service-call name="popstore.CartServices.add#Product" out-map="addOut"
                 in-map="[productId:productId, quantity:quantity, currencyUomId:currencyUomId, productStoreId: productStoreId]"/> 
                 <set field="addedCorrect" from="false"/>
@@ -81,7 +92,6 @@ along with this software (see the LICENSE.md file). If not, see
     </pre-actions>
     <actions>
         <service-call name="popstore.ProductServices.get#ProductInfo" out-map="product" in-map="[productId:productId]"/>
-        <service-call name="popstore.ProductServices.get#ProductQuantity" out-map="productQuantity" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.get#ProductReviews" out-map="reviewsList" in-map="[productId:productId]"/>
         <service-call name="popstore.ProductServices.find#ProductAvailability" in-map="context" out-map="context" />
 
