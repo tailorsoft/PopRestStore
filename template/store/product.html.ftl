@@ -95,30 +95,29 @@
                         <hr class="product-hr">
                         -->
                     </div>
-                    <div class="form-group col">
-                        <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
-                        <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
-                        <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
-                    </div>
+                    
+                    <input type="hidden" value="${product.pseudoId}" name="productId" id="productId" />
+                    <input type="hidden" value="${product.priceUomId}" name="currencyUomId" />
+                    <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken"/>
+                
                     <#if isVirtual>
-                        <div class="form-group col">
-                            <#assign featureTypes = variantsList.listFeatures.keySet()>
-                            <#assign arrayIds = [] />
-                            <#list featureTypes![] as featureType>
-                                ${featureType.description!}
-                                <#assign variants = variantsList.listFeatures.get(featureType)>
-                                <select class="form-control featureSelect" name="${featureType.productFeatureTypeEnumId}" id="variantProduct${featureType?index}" required>
-                                    <option value="" disabled selected>
-                                        Select an Option 
+                    <div class="form-group col">
+                        <#assign featureTypes = variantsList.listFeatures.keySet() >
+                        <#list featureTypes![] as featureType>
+                            ${featureType.description!}
+                            <#assign variants = variantsList.listFeatures.get(featureType)>
+                            <select class="form-control featureSelect" name="${featureType.productFeatureTypeEnumId}" id="variantProduct${featureType?index}" required>
+                                <option value="" disabled selected>
+                                    Select an Option 
+                                </option>
+                                <#list variants![] as variant>
+                                    <option value="${variant.productFeatureId}">
+                                        ${variant.description!} 
                                     </option>
-                                    <#list variants![] as variant>
-                                        <option value="${variant.productFeatureId}">
-                                            ${variant.description!} 
-                                        </option>
-                                    </#list>
-                                </select>
-                            </#list>
-                        </div>
+                                </#list>
+                            </select>
+                        </#list>
+                    </div>
                     </#if>
                 </div>
                 <div id="addToCartSection">
@@ -234,21 +233,6 @@
     var selectedProductId = '${selectedOptionId!''}';
 
     document.body.onload = function() {
-        <#if isVirtual>
-            var productAvailability = ${productAvailability?replace('=',':')};
-            var variantIdList = [];
-            <#list 0..variantsList.listFeatures.keySet()?size - 1  as x>
-                $('#variantProduct${x}').on('change', function() {
-                    var productVariantId = $('#productId').val();
-                    variantIdList[${x}] = this.value;
-                    if(typeof(variantIdList[1]) != 'undefined') {
-                        productVariantId = productVariantId + '_' + variantIdList[1] + '_' + variantIdList[0];
-                    } else {
-                        productVariantId = productVariantId + '_' + variantIdList[0];
-                    }
-                });
-            </#list>
-        </#if> 
         initializeFeatureSelects();
     }
 

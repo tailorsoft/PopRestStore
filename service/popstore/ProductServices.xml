@@ -397,7 +397,7 @@ along with this software (see the LICENSE.md file). If not, see
                     <set field="item" from="[enumId:featureType.enumId, enumTypeId:featureType.enumTypeId, 
                         description:featureType.description, lastUpdatedStamp:featureType.lastUpdatedStamp]"/> 
                     <set field="content" from="[productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                        description:featureType.description]"/>
+                        description:featureType.description, sequenceNum:featureType.sequenceNum]"/>
                     <script><![CDATA[
                         selectedPrices = (priceSet.price != null && priceSet != 0) ? priceSet : mainPriceSet
                         // we use this flag in UI to emphasis discounted products but important to know if any of variants of discounted
@@ -410,7 +410,7 @@ along with this software (see the LICENSE.md file). If not, see
                             listFeatures.put(content, 
                             [[productFeatureId:productFeature.productFeatureId, 
                             productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                            description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices]])
+                            description:productFeature.description, abbrev:productFeature.abbrev]])
                         } else {
                             boolean isItemInList = false
                             for(int i=0; i < featureSet.size(); i++) {
@@ -422,7 +422,7 @@ along with this software (see the LICENSE.md file). If not, see
                             if(!isItemInList) {
                                 featureSet.add([productFeatureId:productFeature.productFeatureId, 
                                 productFeatureTypeEnumId:productFeature.productFeatureTypeEnumId, 
-                                description:productFeature.description, abbrev:productFeature.abbrev, price:selectedPrices])
+                                description:productFeature.description, abbrev:productFeature.abbrev])
                             }
                         }
 

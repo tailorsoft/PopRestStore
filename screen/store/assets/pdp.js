@@ -25,7 +25,15 @@ function initializeFeatureSelects() {
       applyFeatureFilters();
     }
   }
-  applyFeatureFilters();
+
+  if (variants.size > 1)
+    applyFeatureFilters();
+  else {
+    // todo, fix this
+    document.getElementById("outOfStock").style.display = "none";
+    document.getElementById("addToCartSection").style.display = "block";
+  }
+    
 }
 
 
