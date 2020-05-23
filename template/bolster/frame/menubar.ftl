@@ -17,19 +17,9 @@
                         <b-collapse class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                             <ul class="navbar-nav">
                                 
-                                <li class="nav-item p-relative"><a href="#" class="nav-link">Home <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="/" class="nav-link active">Home Style One</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/diction-two" class="nav-link active">Home Style Two</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="/diction-three" class="nav-link active">Home Style Three</a>
-                                        </li>
-                                    </ul>
+                                <li class="nav-item p-relative">
+                                    <a href="/store/" class="nav-link">Home </a>
+                                    
                                 </li>
 
                                 <li class="nav-item p-relative"><a href="#" class="nav-link">Shop <i class="fas fa-chevron-down"></i></a>

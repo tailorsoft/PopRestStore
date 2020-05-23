@@ -1,13 +1,12 @@
-<#macro productlisting product >
+<#macro productlisting productId productName imageContentId price listPrice  >
     <div 
         :class="className">
         <div class="single-product-box">
             <div class="product-image">
-                <a href="/store/product/${product.productId}">
-                <#if product.mediumImageInfo?? || product.smallImageInfo??>
-                    <#assign img = product.mediumImageInfo! product.smallImageInfo>
+                <a href="/store/product/${productId}">
+                    <#if imageContentId ??>
                         <img class="figure-img img-fluid product-img product-small-img"
-                            src="/store/content/productImage/${img.productContentId}"
+                            src="/store/content/productImage/${imageContentId}"
                             alt="Product Image">
                     <#else>
                         <img class="figure-img img-fluid product-img product-small-img"
@@ -56,7 +55,7 @@
 
             <div class="product-content">
                 <h3>
-                    <a href="/store/product/${product.productId}">${product.productName}</a>
+                    <a href="/store/product/${productId}">${productName}</a>
                 </h3>
 
                 <div class="product-price">
@@ -64,9 +63,9 @@
                         class="old-price"
                         v-if="product.offer"
                     >
-                        ${product.price - 0}
+                        ${listPrice}
                     </span>
-                    <span class="new-price">${product.price}</span>
+                    <span class="new-price">${price}</span>
                 </div>
 
                 <div class="rating">
@@ -76,7 +75,7 @@
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <#if product.productTypeEnumId?if_exists == 'PtAsset'>
+                <#if productTypeEnumId?if_exists == 'PtAsset'>
                 <a 
                     v-else
                     href="javascript:void(0)" 

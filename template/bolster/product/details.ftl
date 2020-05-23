@@ -2,16 +2,22 @@
 <#if productsInCart.orderItemList??>
     <#assign cart = productsInCart.orderItemList>
 </#if>
+<#assign brandFeatures = product.standardFeatureList?filter(x -> x.productFeatureTypeEnumId == "PftBrand") />
+<#if (brandFeatures?size gt 0) >
+    <#assign brand = brandFeatures?first />
+</#if>
 <#assign sizes = []>
 <#assign colors = []>
-<#list variantsList.listFeatures?keys as key>
-    <#if key.productFeatureTypeEnumId?if_exists == 'PftColor'>
-        <#assign colors = variantsList.listFeatures.get(key)>
-    </#if>
-    <#if key.productFeatureTypeEnumId?if_exists == 'PftSize'>
-        <#assign sizes = variantsList.listFeatures.get(key)>
-    </#if>
-</#list>
+<#if variantsList?? >
+    <#list variantsList.listFeatures?keys as key>
+        <#if key.productFeatureTypeEnumId?if_exists == 'PftColor'>
+            <#assign colors = variantsList.listFeatures.get(key)>
+        </#if>
+        <#if key.productFeatureTypeEnumId?if_exists == 'PftSize'>
+            <#assign sizes = variantsList.listFeatures.get(key)>
+        </#if>
+    </#list>
+</#if>
 <#--
 We want to generate a JSON structure like follows:
 variants : {
@@ -29,6 +35,10 @@ variants : {
 -->
 <#assign variants = {}>
 <#assign stock = 0 >
+<#if productQuantity?? &amp;&amp; productQuantity.productQuantity?? >
+    <#assign stock = stock + productQuantity.productQuantity >
+</#if>
+
 <#list colors as color>
     <!-- here we create the simple array or productIds for this color -->
     <#assign colorVariants = []>
@@ -61,8 +71,6 @@ variants : {
     <#assign variants = variants +  { color.productFeatureId: colorMap } >
 </#list>
 
-<#assign brand = product.standardFeatureList?filter(x -> x.productFeatureTypeEnumId == "PftBrand")?first />
-
 
 
 
@@ -93,24 +101,26 @@ variants : {
                 <li><span>Product Type:</span> <a href="#">${product.productTypeEnumId}</a></li>
             </ul>
 
-            <div class="product-color-switch">
-                <h4>Color:</h4>
-                <ul>
-                    <#list colors as color>
-                        <li><a href="#" data-color="${color.productFeatureId}" style="background:${color.idCode}"></a></li>
-                    </#list>
-                </ul>
-            </div>
-
-            <div class="product-size-wrapper">
-                <h4>Size:</h4>
-                <ul>
-                    <#list sizes as size>
-                        <li><a href="#" data-size="${size.productFeatureId}">${size.abbrev}</a></li>
-                    </#list>
-                </ul>
-            </div>
-
+            <#if colors?size gt 0 >
+                <div class="product-color-switch">
+                    <h4>Color:</h4>
+                    <ul>
+                        <#list colors as color>
+                            <li><a href="#" data-color="${color.productFeatureId}" style="background:${color.idCode}"></a></li>
+                        </#list>
+                    </ul>
+                </div>
+            </#if>
+            <#if sizes?size gt 0 >
+                <div class="product-size-wrapper">
+                    <h4>Size:</h4>
+                    <ul>
+                        <#list sizes as size>
+                            <li><a href="#" data-size="${size.productFeatureId}">${size.abbrev}</a></li>
+                        </#list>
+                    </ul>
+                </div>
+            </#if>
             <div class="product-add-to-cart">
                 <div class="input-counter">
                     <span class="minus-btn"><i class="fas fa-minus"></i></span>
@@ -144,6 +154,7 @@ variants : {
 </div>
 
 <script>
+    var productId = '${product.productId}';
     var variantsMap = ${ Static["groovy.json.JsonOutput"].toJson(variants) };
     var cart = ${ Static["groovy.json.JsonOutput"].toJson(cart) };
 
@@ -152,6 +163,7 @@ variants : {
         var quantity = 1;
 
         $( window ).on( 'hashchange', function( e ) {
+            console.log('hashchange', window.location.hash)
             [color, size] = window.location.hash.replace('#', '').split('/');
             updateFromValues(color, size);
         });
@@ -159,7 +171,14 @@ variants : {
         if (valuesAreValid(color, size)) {
             updateFromValues(color, size);
         } else {
-            window.location.hash = getDefaultHash();
+            var defaultHash = getDefaultHash();
+            if (defaultHash) {
+                window.location.hash = defaultHash;
+            } else if (Object.keys(variantsMap).length == 0) {
+                updateCartButtons(productId); // This product has no variants
+            } else {
+                $(".product-add-to-cart").hide();
+            }
         }
 
         function valuesAreValid(color, size) {
@@ -170,6 +189,9 @@ variants : {
             var colors = Object.keys(variantsMap);
             var middleColor = colors[Math.round((colors.length - 1) / 2)];
             var color = getNextAvailableColor(middleColor);
+
+            // no colors have available inventory
+            if (!color) return;
 
             var sizes = Object.keys(variantsMap[color])
             var middleSize = sizes[Math.round((sizes.length - 1) / 2)];
@@ -195,22 +217,26 @@ variants : {
                 var variant = variantsMap[color][size];
                 $('input[name="productId"]').val(variant.productId);
 
-                // If the item was in the cart already, show the different button
-                var cartItem = getCartItem(variant.productId);
-                if (cartItem) {
-                    updateQuantity(cartItem.quantity);
-                    $(".product-add-to-cart").find(".btn-danger").show();
-                    $(".product-add-to-cart").find(".btn-primary").hide();
-                } else {
-                    updateQuantity(1);
-                    $(".product-add-to-cart").find(".btn-danger").hide();
-                    $(".product-add-to-cart").find(".btn-primary").show();
-                }
+                updateCartButtons(variant.productId)
                 $(".product-add-to-cart").show();
             } else {
                 $(".product-add-to-cart").hide();
             }
             updateSizesInStock();
+        }
+
+        function updateCartButtons(productId) {
+            // If the item was in the cart already, show the different button
+            var cartItem = getCartItem(productId);
+            if (cartItem) {
+                updateQuantity(cartItem.quantity);
+                $(".product-add-to-cart").find(".btn-danger").show();
+                $(".product-add-to-cart").find(".btn-primary").hide();
+            } else {
+                updateQuantity(1);
+                $(".product-add-to-cart").find(".btn-danger").hide();
+                $(".product-add-to-cart").find(".btn-primary").show();
+            }
         }
 
         function getCartItem(productId) {
@@ -261,12 +287,14 @@ variants : {
             var colorMap = variantsMap[color];
             if(size && colorMap[size].quantity > 0) return size;
 
+            if (!colorMap) return;
+
             var sizes = Object.keys(colorMap)
             for(var s of sizes) {
                 if(colorMap[s].quantity > 0) return s;
             }
 
-            return "";
+            return;
         }
 
         $(".product-size-wrapper a").click(function(e) {

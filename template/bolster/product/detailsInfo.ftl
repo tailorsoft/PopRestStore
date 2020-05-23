@@ -1,14 +1,14 @@
 
-<#assign ingredientsContent = product.contentList?filter(x -> x.productContentTypeEnumId == "PcntIngredients")?first />
-<#if ingredientsContent??>
+<#assign ingredientsContent = product.contentList?filter(x -> x.productContentTypeEnumId == "PcntIngredients") />
+<#if ingredientsContent?size gt 0>
     <#assign ingredients = ec.service.sync().name("popstore.ProductServices.get#LocationText")
-        .parameter("location", ingredientsContent.contentLocation).call().text>
+        .parameter("location", ingredientsContent?first.contentLocation).call().text>
 </#if>
 
-<#assign specificationsContent = product.contentList?filter(x -> x.productContentTypeEnumId == "PcntSpecification")?first />
-<#if specificationsContent??>
+<#assign specificationsContent = product.contentList?filter(x -> x.productContentTypeEnumId == "PcntSpecification") />
+<#if specificationsContent?size gt 0>
     <#assign specifications = ec.service.sync().name("popstore.ProductServices.get#LocationText")
-        .parameter("location", specificationsContent.contentLocation).call().text>
+        .parameter("location", specificationsContent?first.contentLocation).call().text>
 </#if>
 
 

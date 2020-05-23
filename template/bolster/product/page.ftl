@@ -18,7 +18,7 @@
                 <#include "images.ftl"/>
                 <#include "details.ftl"/>
                 <#include "detailsInfo.ftl"/>
-                <RelatedProducts :id = "product.id" />
+                <#include "relatedProducts.ftl"/>
             </div>
         </div>
     </section>

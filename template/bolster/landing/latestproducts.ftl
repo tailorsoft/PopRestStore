@@ -14,7 +14,7 @@
                 <div class="row">
                     <#list products.productList as product>
                         <div class="col-lg-3 col-md-6 col-sm-6">
-                            <@productlisting product/>
+                            <@productlisting product.productId product.productName product.mediumImageInfo.productContentId product.price product.listPrice  />
                         </div>
                     </#list>
                 </div>
