@@ -13,7 +13,7 @@
                 <div class="col-lg-5 col-md-6">
                     <ul class="top-header-right-nav">
                         <li><a href="/blog-one">Blog</a></li>
-                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/store/d#/checkout">Cart</a></li>
                         <li>
                             <div class="languages-list">
                                 <select>

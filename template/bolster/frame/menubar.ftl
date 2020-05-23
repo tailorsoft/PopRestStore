@@ -17,55 +17,9 @@
                         <b-collapse class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                             <ul class="navbar-nav">
                                 
-                                <li class="nav-item p-relative">
-                                    <a href="/store/" class="nav-link">Home </a>
-                                    
-                                </li>
-
-                                <li class="nav-item p-relative"><a href="#" class="nav-link">Shop <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="/products" class="nav-link">Products</a></li>
-
-                                        <li class="nav-item"><a href="/products-details/1" class="nav-link">Products Details</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="/gallery-one" class="nav-link">Gallery</a>
-                                </li>
-
-                                <li class="nav-item p-relative"><a href="#" class="nav-link">Pages <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a href="/gallery-one" class="nav-link">Gallery</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/cart" class="nav-link">Cart</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/checkout" class="nav-link">Checkout</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/login" class="nav-link">Login</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/signup" class="nav-link">Signup</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/not-found" class="nav-link">Error 404</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="/contact" class="nav-link">Contact</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
+                                <li class="nav-item p-relative"><a href="/store/" class="nav-link">Home </a></li>
+                                <li class="nav-item p-relative"><a href="/store/category/all" class="nav-link">Shop </a></li>
+                                <li class="nav-item"><a href="/gallery-one" class="nav-link">Gallery</a></li>
                                 <li class="nav-item p-relative"><a href="#" class="nav-link">Blog <i class="fas fa-chevron-down"></i></a>
                                     <ul class="dropdown-menu">
                                         <li class="nav-item"><a href="/blog-one" class="nav-link">Blog Grid</a></li>
@@ -81,10 +35,10 @@
 
                             <div class="others-option">
                                 <div class="option-item">
-                                    <a href="/login">Login</a>
+                                    <a href="/store/d#/login">Login</a>
                                 </div>
                                 <div class="option-item">
-                                    <a @click.prevent="toggle" href="#">
+                                    <a href="/store/d#/checkout">
                                         Cart(${cartQuantity}) <i class="fas fa-shopping-bag"></i>
                                     </a>
                                 </div>

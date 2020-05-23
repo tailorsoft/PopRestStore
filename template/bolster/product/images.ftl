@@ -17,14 +17,20 @@
     var contentList = ${ Static["groovy.json.JsonOutput"].toJson(product.contentList) };
 
     $(function() {
-        var [color, size] = window.location.hash.replace('#', '').split('/');
+        // this is to avoid the flicker as the hash changes
+        setTimeout(function() {
+          var [color, size] = window.location.hash.replace('#', '').split('/');
+          updateFromValues(color, size);
 
-        updateFromValues(color, size);
+          $( window ).on( 'hashchange', function( e ) {
+              [color, size] = window.location.hash.replace('#', '').split('/');
+              updateFromValues(color, size);
+          });
+        
+        }, 100)
+        
 
-        $( window ).on( 'hashchange', function( e ) {
-            [color, size] = window.location.hash.replace('#', '').split('/');
-            updateFromValues(color, size);
-        });
+        
 
         function updateFromValues(color, size) {
           console.log("updateFromValues:", color, size)

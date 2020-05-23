@@ -16,12 +16,11 @@
                                 <h3>Women's</h3>
 
                                 <ul>
-                                    <li><a href="#">Woman Accessories</a></li>
-                                    <li><a href="#">Man Accessories</a></li>
-                                    <li><a href="#">Sunglasses</a></li>
-                                    <li><a href="#">Belts</a></li>
-                                    <li><a href="#">Hats</a></li>
-                                    <li><a href="#">Scarfs</a></li>
+                                    <li><a href="/store/category/womens">Womens Accessories</a></li>
+                                    <li><a href="/store/category/womens">Sunglasses</a></li>
+                                    <li><a href="/store/category/womens">Belts</a></li>
+                                    <li><a href="/store/category/womens">Hats</a></li>
+                                    <li><a href="/store/category/womens">Scarfs</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -41,12 +40,12 @@
                                 <h3>Accessories</h3>
 
                                 <ul>
-                                    <li><a href="#">Woman Accessories</a></li>
-                                    <li><a href="#">Man Accessories</a></li>
-                                    <li><a href="#">Sunglasses</a></li>
-                                    <li><a href="#">Belts</a></li>
-                                    <li><a href="#">Hats</a></li>
-                                    <li><a href="#">Scarfs</a></li>
+                                    <li><a href="/store/category/womens">Womens Accessories</a></li>
+                                    <li><a href="/store/category/mens">Mens Accessories</a></li>
+                                    <li><a href="/store/category/mens">Sunglasses</a></li>
+                                    <li><a href="/store/category/mens">Belts</a></li>
+                                    <li><a href="/store/category/mens">Hats</a></li>
+                                    <li><a href="/store/category/mens">Scarfs</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -66,12 +65,11 @@
                                 <h3>Men's</h3>
 
                                 <ul>
-                                    <li><a href="#">Woman Accessories</a></li>
-                                    <li><a href="#">Man Accessories</a></li>
-                                    <li><a href="#">Sunglasses</a></li>
-                                    <li><a href="#">Belts</a></li>
-                                    <li><a href="#">Hats</a></li>
-                                    <li><a href="#">Scrafs</a></li>
+                                    <li><a href="/store/category/mens">Mens Accessories</a></li>
+                                    <li><a href="/store/category/mens">Sunglasses</a></li>
+                                    <li><a href="/store/category/mens">Belts</a></li>
+                                    <li><a href="/store/category/mens">Hats</a></li>
+                                    <li><a href="/store/category/mens">Scrafs</a></li>
                                 </ul>
                             </div>
                         </div>

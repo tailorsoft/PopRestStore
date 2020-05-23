@@ -163,8 +163,12 @@ variants : {
         var size = "";
         var quantity = 1;
 
-        if (window.location.hash && window.location.hash.indexOf("/") > 0) {
-            [color, size] = window.location.hash.replace('#', '').split('/');
+        if (window.location.hash) {
+            if (window.location.hash.indexOf("/") > 0) {
+                [color, size] = window.location.hash.replace('#', '').split('/');
+            } else {
+                size = window.location.hash.replace('#', '');
+            }
         }
         
 
