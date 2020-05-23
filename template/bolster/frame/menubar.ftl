@@ -1,14 +1,15 @@
 <#assign cartQuantity = 0 >
-<#list productsInCart.orderItemList?if_exists as orderItem>
-    <#assign cartQuantity = cartQuantity + orderItem.quantity>
-</#list>
-
+<#if productsInCart?? &amp;&amp; productsInCart.orderItemList??>
+    <#list productsInCart.orderItemList as orderItem>
+        <#assign cartQuantity = cartQuantity + orderItem.quantity>
+    </#list>
+</#if>
 <div class="navbar-area">
             <div class="comero-nav">
                 <div class="container">
                     <nav class="navbar navbar-expand-md navbar-light">
-                        <a class="navbar-brand" href="/">
-                            <img src="/store/assets/bolster/img/logo.png" alt="logo">
+                        <a class="navbar-brand" href="/store/">
+                            <img src="/store/assets/bolster/logo.svg" alt="logo" width="150" height="32">
                         </a>
 
                         <b-navbar-toggle target="navbarSupportedContent"></b-navbar-toggle>

@@ -42,8 +42,7 @@
         function addImagesForColor(color) {
           var count = 0;
           for(var content of contentList) {
-            console.log(content.productFeatureId, " == ", color)
-            if (content.productFeatureId == color) {
+            if (content.productFeatureId == color && content.productContentTypeEnumId == 'PcntImageLarge') {
               var className = count == 0 ? "active" : "";
               $('.product-images .carousel-inner').append(`
                 <div class="carousel-item `+ className +`">

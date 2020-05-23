@@ -76,7 +76,7 @@
                     <i class="fas fa-star"></i>
                     <i class="far fa-star"></i>
                 </div>
-                <#if product.productTypeEnumId = 'PtAsset'>
+                <#if product.productTypeEnumId?if_exists == 'PtAsset'>
                 <a 
                     v-else
                     href="javascript:void(0)" 

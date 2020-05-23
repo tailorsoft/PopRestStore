@@ -16,8 +16,8 @@
         <div class="container">
             <div class="row">
                 <#include "images.ftl"/>
-                <#include "detail.ftl"/>
-                <DetailsInfo />
+                <#include "details.ftl"/>
+                <#include "detailsInfo.ftl"/>
                 <RelatedProducts :id = "product.id" />
             </div>
         </div>

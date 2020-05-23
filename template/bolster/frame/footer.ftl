@@ -4,7 +4,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="logo">
-                            <a href="/"><img src="/store/assets/bolster/img/logo.png" alt="logo"></a>
+                            <a href="/store/"><img src="/store/assets/bolster/logo.svg" alt="logo" width="150" height="32"></a>
                         </div>
 
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
@@ -56,7 +56,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6">
-                        <p>Copyright &copy; 2020 Bolster. All Rights Reserved</p>
+                        <p>Copyright &copy; 2020 Moqui. No Rights Reserved</p>
                     </div>
 
                     <div class="col-lg-6 col-md-6">
