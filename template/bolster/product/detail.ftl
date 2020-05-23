@@ -1,4 +1,4 @@
-<#assign cart = {}>
+<#assign cart = false>
 <#if productsInCart.orderItemList??>
     <#assign cart = productsInCart.orderItemList>
 </#if>
@@ -49,7 +49,7 @@ variants : {
             <#if key.enumId?if_exists == 'PftSize'>
                 <#list variantsList.variantOptions.get(key) as v>
                     <#if v.productFeatureId == size.productFeatureId &amp;&amp; colorVariants?seq_contains(v.productId) >
-                        <#assign colorMap = colorMap + { size.abbrev : v }>
+                        <#assign colorMap = colorMap + { size.productFeatureId : v }>
                         <#if v.quantity?? >
                             <#assign stock = stock + v.quantity?number >
                         </#if>
@@ -58,10 +58,13 @@ variants : {
             </#if>
         </#list>
     </#list>
-    <#assign variants = variants +  { color.abbrev: colorMap } >
+    <#assign variants = variants +  { color.productFeatureId: colorMap } >
 </#list>
 
 <#assign brand = product.standardFeatureList?filter(x -> x.productFeatureTypeEnumId == "PftBrand")?first />
+
+
+
 
     <div class="col-lg-6 col-md-6">
         <form class="product-details-content" method="post" action="/store/product/addToCart">
@@ -94,7 +97,7 @@ variants : {
                 <h4>Color:</h4>
                 <ul>
                     <#list colors as color>
-                        <li><a href="#" data-color="${color.abbrev}" style="background:${color.idCode}"></a></li>
+                        <li><a href="#" data-color="${color.productFeatureId}" style="background:${color.idCode}"></a></li>
                     </#list>
                 </ul>
             </div>
@@ -103,7 +106,7 @@ variants : {
                 <h4>Size:</h4>
                 <ul>
                     <#list sizes as size>
-                        <li><a href="#" data-size="${size.abbrev}">${size.abbrev}</a></li>
+                        <li><a href="#" data-size="${size.productFeatureId}">${size.abbrev}</a></li>
                     </#list>
                 </ul>
             </div>
@@ -180,7 +183,6 @@ variants : {
         }
 
         function updateFromValues(color, size) {
-            console.log("updateFromValues:", color, size)
             $(".product-color-switch").find('li').removeClass("active");
             $('.product-color-switch a[data-color=' + color + ']').parent().addClass("active");
 
