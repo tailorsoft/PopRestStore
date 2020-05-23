@@ -159,11 +159,16 @@ variants : {
     var cart = ${ Static["groovy.json.JsonOutput"].toJson(cart) };
 
     $(function() {
-        var [color, size] = window.location.hash.replace('#', '').split('/');
+        var color = "";
+        var size = "";
         var quantity = 1;
 
+        if (window.location.hash && window.location.hash.indexOf("/") > 0) {
+            [color, size] = window.location.hash.replace('#', '').split('/');
+        }
+        
+
         $( window ).on( 'hashchange', function( e ) {
-            console.log('hashchange', window.location.hash)
             [color, size] = window.location.hash.replace('#', '').split('/');
             updateFromValues(color, size);
         });
@@ -201,7 +206,10 @@ variants : {
         }
 
         function updateHash() {
-            window.location.hash = color+"/"+size;
+            if (color && size)
+                window.location.hash = color+"/"+size;
+            else if (color)
+                window.location.hash = color;
         }
 
         function updateFromValues(color, size) {
