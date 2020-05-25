@@ -4,15 +4,14 @@
         <#assign cartQuantity = cartQuantity + orderItem.quantity>
     </#list>
 </#if>
-<div class="navbar-area">
+        <#include "../cart/sidebar.ftl"/>
+        <div class="navbar-area">
             <div class="comero-nav">
                 <div class="container">
                     <nav class="navbar navbar-expand-md navbar-light">
                         <a class="navbar-brand" href="/store/">
                             <img src="/store/assets/bolster/logo.svg" alt="logo" width="150" height="32">
                         </a>
-
-                        <b-navbar-toggle target="navbarSupportedContent"></b-navbar-toggle>
 
                         <b-collapse class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
                             <ul class="navbar-nav">
@@ -38,7 +37,7 @@
                                     <a href="/store/d#/login">Login</a>
                                 </div>
                                 <div class="option-item">
-                                    <a href="/store/d#/checkout">
+                                    <a href="#" data-toggle="modal" data-target="#shoppingCartModal">
                                         Cart(${cartQuantity}) <i class="fas fa-shopping-bag"></i>
                                     </a>
                                 </div>
@@ -48,6 +47,8 @@
                 </div>
             </div>
         </div>
+        
+
         <script>
         $(function() {
             const navTop = $('.navbar-area').offset().top;

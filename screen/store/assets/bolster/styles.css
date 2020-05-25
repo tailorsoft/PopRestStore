@@ -186,14 +186,18 @@ img {
 	border-color: #222222;
 }
 
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled).active, 
+.btn-primary:not(:disabled):not(.disabled):active, 
+.show > .btn-primary.dropdown-toggle {
 	box-shadow: unset;
 	background-color: transparent;
 	color: #222222;
 	border-color: #222222;
 }
 
-.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show > .btn-primary.dropdown-toggle:focus {
+.btn-primary:not(:disabled):not(.disabled).active:focus, 
+.btn-primary:not(:disabled):not(.disabled):active:focus, 
+.show > .btn-primary.dropdown-toggle:focus {
 	box-shadow: unset;
 }
 
@@ -216,14 +220,18 @@ img {
 	border-color: #222222;
 }
 
-.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show > .btn-light.dropdown-toggle {
+.btn-light:not(:disabled):not(.disabled).active, 
+.btn-light:not(:disabled):not(.disabled):active, 
+.show > .btn-light.dropdown-toggle {
 	box-shadow: unset;
 	color: #ffffff;
 	background-color: #222222;
 	border-color: #222222;
 }
 
-.btn-light:not(:disabled):not(.disabled).active:focus, .btn-light:not(:disabled):not(.disabled):active:focus, .show > .btn-light.dropdown-toggle:focus {
+.btn-light:not(:disabled):not(.disabled).active:focus, 
+.btn-light:not(:disabled):not(.disabled):active:focus, 
+.show > .btn-light.dropdown-toggle:focus {
 	box-shadow: unset;
 }
 
@@ -1286,7 +1294,7 @@ Navbar Area CSS
 Modal CSS
 =================================================*/
 .shoppingCartModal {
-	display: block !important;
+	/* display: block !important; */
 }
 
 .shoppingCartModal.modal.right .modal-dialog {
@@ -1303,12 +1311,13 @@ Modal CSS
 }
 
 .shoppingCartModal.modal.right.fade .modal-dialog {
-	right: -420px;
-	transition: opacity 0.3s linear, right 0.3s ease-out;
+	left: -320px;
+	
 }
 
 .shoppingCartModal.modal.right.fade.show .modal-dialog {
-	right: 0;
+	left: 0;
+	transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
 .shoppingCartModal .modal-content {
@@ -2020,7 +2029,9 @@ Main Banner Area CSS
 	margin-bottom: 30px;
 }
 
-.banner-content .btn-primary:not(:disabled):not(.disabled).active, .banner-content .btn-primary:not(:disabled):not(.disabled):active, .show > .banner-content .btn-primary.dropdown-toggle {
+.banner-content .btn-primary:not(:disabled):not(.disabled).active, 
+.banner-content .btn-primary:not(:disabled):not(.disabled):active, 
+.show > .banner-content .btn-primary.dropdown-toggle {
 	color: #222222;
 	border-color: #222222;
 	background-color: #ffffff;
@@ -8775,10 +8786,11 @@ Go Top CSS
 	visibility: visible;
 	top: 50%;
 }
-
+/*
 .fade:not(.show) {
 	opacity: 1 !important;
 }
+*/
 
 .added-btn {
 	cursor: not-allowed;

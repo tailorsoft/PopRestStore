@@ -1,5 +1,5 @@
 <#assign cart = false>
-<#if productsInCart.orderItemList??>
+<#if productsInCart?? &amp;&amp; productsInCart.orderItemList??>
     <#assign cart = productsInCart.orderItemList>
 </#if>
 <#assign brandFeatures = product.standardFeatureList?filter(x -> x.productFeatureTypeEnumId == "PftBrand") />

@@ -15,7 +15,6 @@
 
 <script>
     var contentList = ${ Static["groovy.json.JsonOutput"].toJson(product.contentList) };
-
     $(function() {
         // this is to avoid the flicker as the hash changes
         setTimeout(function() {
