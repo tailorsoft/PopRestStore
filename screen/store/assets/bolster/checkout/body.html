@@ -1,4 +1,4 @@
-<div>
+<div id="checkout-body">
     <checkout-navbar />
     <div class="container">
         <div class="loader" v-if="isCurrentStep(STEP_PENDING)"></div>
@@ -159,10 +159,9 @@
                                     option.telecomContactMechId" v-model="addressOption"
                                     @click="changeShippingAddress(option)"/>
                                 <span class="checkmark"></span>
-                                <span class="span-description">{{option.postalAddress.toName}}</span>
-                                <span class="span-description">
-                                    {{option.postalAddress.address1}} {{option.postalAddress.address2}}
-                                </span>
+                                <span class="span-description" v-if="option.postalAddress.toName" >{{option.postalAddress.toName}}</span>
+                                <span class="span-description"> {{option.postalAddress.address1}} </span>
+                                <span v-if="option.postalAddress.address2" class="span-description"> {{option.postalAddress.address2}}</span>
                                 <span class="span-description">{{option.postalAddress.city}}</span>
                                 <span v-if="option.postalAddressStateGeo" class="span-description">
                                     {{option.postalAddressStateGeo.geoName}}
@@ -183,17 +182,15 @@
                             </span>
                         </div>
                     </div>
-                    <br>
-                    <!-- Buttons    -->
-                    <button
-                        @click="addressContinue()" class="btn btn-continue float-right"
-                        :disabled="addressOption == null || addressOption == ''
-                        || listShippingAddress == null || listShippingAddress.length == 0 ">
-                        Continue
-                    </button>
-                    <a data-toggle="modal" data-target="#addressFormModal" class="text-add" @click="resetData()">
-                        Add a New Address
-                    </a>
+                    <div class="section-buttons">
+                        <button class="btn btn-light" @click="resetData()" data-toggle="modal" data-target="#addressFormModal" >
+                            Add a New Address
+                        </button>
+                        <button class="btn btn-primary" @click="addressContinue()" 
+                            :disabled="addressOption == null || addressOption == '' || listShippingAddress == null || listShippingAddress.length == 0 ">
+                            Continue
+                        </button>
+                    </div>
                 </div>
                 <br />
 
@@ -231,14 +228,16 @@
                         </div>
                     </div>
                     <br>
-                    <button
-                        @click="shippingContinue()" class="btn btn-continue float-right"
-                        :disabled="shippingOption == null || shippingOption == '' ||  listShippingOptions == null || listShippingOptions.length == 0"
-                        style="margin-top: -15px;"><!-- Style needed to keep button away from next section -->
-                        Continue
-                    </button>
+                    <div class="section-buttons">
+                        <button class="btn btn-primary"
+                            @click="shippingContinue()" 
+                            :disabled="shippingOption == null || shippingOption == '' ||  listShippingOptions == null || listShippingOptions.length == 0"
+                            style="margin-top: -15px;"><!-- Style needed to keep button away from next section -->
+                            Continue
+                        </button>
+                    </div>
                 </div>
-                <br>
+                
 
                 <!-- Payment method section -->
                 <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_BILLING), 'step-complete':isCompleteStep(STEP_BILLING)}">
@@ -287,18 +286,19 @@
                                 <i class="fas fa-trash-alt"></i>
                             </div>
                         </div>
-                        <br />
                     </div>
-                    <br />
-                    <a data-toggle="modal" data-target="#creditCardModal" class="text-add" @click="resetData()">
-                        Add a Credit Card
-                    </a>
-                    <button class="btn btn-continue float-right"
-                        @click="validateCvv()"
-                        :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
-                        listPaymentMethods.length == 0">
-                        Continue
-                    </button>
+                    <div class="section-buttons">
+                        <button class="btn btn-light"
+                            data-toggle="modal" data-target="#creditCardModal" @click="resetData()">
+                            Add a Credit Card
+                        </button>
+                        <button class="btn btn-primary"
+                            @click="validateCvv()"
+                            :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
+                            listPaymentMethods.length == 0">
+                            Continue
+                        </button>
+                    </div>
                 </div>
                 <br>
                 <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_REVIEW), 'step-complete':isCompleteStep(STEP_REVIEW)}">
@@ -316,10 +316,7 @@
                         </p>
                         <p class="text-center place-order-text">Place order below to complete your purchase</p>
                     </div>
-                    <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder()">Place Order</button>
-                </div>
-                <div class="text-center" v-if="!isCurrentStep(STEP_PENDING)"> 
-                    <a :href="storePath" class="btn text-add">Keep Shopping</a>
+                    <button class="btn btn-primary col col-lg-12" @click="placeCartOrder()">Place Order</button>
                 </div>
             </div>
         </div>
@@ -353,5 +350,4 @@
             </div>
         </div>
     </div>
-    <footer-page :infoLink="false" />
 </div>
