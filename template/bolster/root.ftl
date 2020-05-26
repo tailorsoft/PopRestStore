@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="/store/assets/bolster/styles.css">
     <link rel="stylesheet" href="/store/assets/bolster/responsive.css">
+    <link rel="shortcut icon" href="/store/favicon.ico">
 </head>
 
 <body>

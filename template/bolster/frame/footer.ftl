@@ -4,7 +4,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="logo">
-                            <a href="/store/"><img src="/store/assets/bolster/logo.svg" alt="logo" width="150" height="32"></a>
+                            <a href="/store/"><img src="/store/assets/bolster/logo.svg" alt="logo" width="167" height="32"></a>
                         </div>
 
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
@@ -16,10 +16,10 @@
                         <h3>Quick Links</h3>
 
                         <ul class="quick-links">
-                            <li><a href="/gallery-one">Gallery</a></li>
-                            <li><a href="/cart">Cart</a></li>
-                            <li><a href="/checkout">Checkout</a></li>
-                            <li><a href="/contact">Contact Us</a></li>
+                            <li><a href="/store/gallery">Gallery</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#shoppingCartModal">Cart</a></li>
+                            <li><a href="/store/d#/checkout">Checkout</a></li>
+                            <li><a href="/store/content/contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>

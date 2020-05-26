@@ -5,12 +5,16 @@
     </#list>
 </#if>
         <#include "../cart/sidebar.ftl"/>
+
+        <#assign blogResp = ec.service.sync().name("org.moqui.impl.WikiServices.get#WikiPageChildren")
+        .parameter("wikiSpaceId", wikiSpaceId).parameter("pagePath", "blog").call()>
+
         <div class="navbar-area">
             <div class="comero-nav">
                 <div class="container">
                     <nav class="navbar navbar-expand-md navbar-light">
                         <a class="navbar-brand" href="/store/">
-                            <img src="/store/assets/bolster/logo.svg" alt="logo" width="150" height="32">
+                            <img src="/store/assets/bolster/logo.svg" alt="logo" width="167" height="32">
                         </a>
 
                         <b-collapse class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>
@@ -18,17 +22,21 @@
                                 
                                 <li class="nav-item p-relative"><a href="/store/" class="nav-link">Home </a></li>
                                 <li class="nav-item p-relative"><a href="/store/category/all" class="nav-link">Shop </a></li>
-                                <li class="nav-item"><a href="/gallery-one" class="nav-link">Gallery</a></li>
-                                <li class="nav-item p-relative"><a href="#" class="nav-link">Blog <i class="fas fa-chevron-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item"><a href="/blog-one" class="nav-link">Blog Grid</a></li>
+                                <li class="nav-item"><a href="/store/content/gallery" class="nav-link">Gallery</a></li>
 
-                                        <li class="nav-item"><a href="/blog-details" class="nav-link">Blog Details</a></li>
+                                <#if blogResp?? &amp;&amp; blogResp.childPageInfoList??>
+                                <li class="nav-item p-relative"><a href="/store/content/blog" class="nav-link">Blog <i class="fas fa-chevron-down"></i></a>
+    
+                                    <ul class="dropdown-menu">
+                                        <#list blogResp.childPageInfoList as childPage>
+                                        <li class="nav-item"><a href="/store/content/${childPage.pagePath}" class="nav-link">${childPage.pageName}</a></li>
+                                        </#list>
                                     </ul>
                                 </li>
+                                </#if>
 
                                 <li class="nav-item">
-                                    <a href="/contact" class="nav-link">Contact</a>
+                                    <a href="/store/content/contact" class="nav-link">Contact</a>
                                 </li>
                             </ul>
 
