@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="offer-box">
-                        <img src="/store/assets/bolster/offers/womens.jpg" alt="image">
+                        <img src="/store/zizistore/offers/womens.jpg" alt="image">
 
                         <div class="category">
                             <h4>Women's</h4>
@@ -29,7 +29,7 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="offer-box">
-                        <img src="/store/assets/bolster/offers/accessories.jpg" alt="image">
+                        <img src="/store/zizistore/offers/accessories.jpg" alt="image">
 
                         <div class="category">
                             <h4>Accessories</h4>
@@ -54,7 +54,7 @@
 
                 <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3">
                     <div class="offer-box">
-                        <img src="/store/assets/bolster/offers/mens.jpg" alt="image">
+                        <img src="/store/zizistore/offers/mens.jpg" alt="image">
 
                         <div class="category">
                             <h4>Men's</h4>

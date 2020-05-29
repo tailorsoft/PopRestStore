@@ -9,7 +9,7 @@ banner5.jpg
 <#assign nextRandom = .now?string["HHmmssSSS"]?number>
 <#assign img = photos[nextRandom % photos?size] >
 
-    <div class="main-banner item-bg1" style="background-image: url('/store/assets/bolster/landing/${img}')">
+    <div class="main-banner item-bg1" style="background-image: url('/store/zizistore/landing/${img}')">
         <div class="d-table">
             <div class="d-table-cell">
                 <div class="container">

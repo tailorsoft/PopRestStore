@@ -4,7 +4,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="logo">
-                            <a href="/store/"><img src="/store/assets/bolster/logo.svg" alt="logo" width="167" height="32"></a>
+                            <a href="/store/"><img src="/store/zizistore/logo.svg" alt="logo" width="167" height="32"></a>
                         </div>
 
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
@@ -61,11 +61,11 @@
 
                     <div class="col-lg-6 col-md-6">
                         <ul class="payment-card">
-                            <li><a href="#" target="_blank"><img src="/store/assets/bolster/img/visadebit.png" alt="image"></a></li>
-                            <li><a href="#" target="_blank"><img src="/store/assets/bolster/img/mastercard.png" alt="image"></a></li>
-                            <li><a href="#" target="_blank"><img src="/store/assets/bolster/img/maestro.png" alt="image"></a></li>
-                            <li><a href="#" target="_blank"><img src="/store/assets/bolster/img/visa.png" alt="image"></a></li>
-                            <li><a href="#" target="_blank"><img src="/store/assets/bolster/img/amex.png" alt="image"></a></li>
+                            <li><a href="#" target="_blank"><img src="/store/zizistore/img/visadebit.png" alt="image"></a></li>
+                            <li><a href="#" target="_blank"><img src="/store/zizistore/img/mastercard.png" alt="image"></a></li>
+                            <li><a href="#" target="_blank"><img src="/store/zizistore/img/maestro.png" alt="image"></a></li>
+                            <li><a href="#" target="_blank"><img src="/store/zizistore/img/visa.png" alt="image"></a></li>
+                            <li><a href="#" target="_blank"><img src="/store/zizistore/img/amex.png" alt="image"></a></li>
                         </ul>
                     </div>
                 </div>
