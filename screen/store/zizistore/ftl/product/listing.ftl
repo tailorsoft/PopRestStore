@@ -59,12 +59,11 @@
                 </h3>
 
                 <div class="product-price">
-                    <span 
-                        class="old-price"
-                        v-if="product.offer"
-                    >
+                    <#if price lt listPrice>
+                    <span class="old-price">
                         ${listPrice}
                     </span>
+                    </#if>
                     <span class="new-price">${price}</span>
                 </div>
 

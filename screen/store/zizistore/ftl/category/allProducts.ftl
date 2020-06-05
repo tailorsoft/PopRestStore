@@ -41,7 +41,11 @@
     <div id="products-filter" class="products-collections-listing row">
         <#list products.productList as product>
             <div class="col-lg-6 col-md-6 products-col-item">
-                <@productlisting product.productId product.productName product.mediumImageInfo.productContentId product.price product.listPrice  />
+                <#assign mediumImageInfo = product.mediumImageInfo!{}/>
+                <#assign imageContentId = mediumImageInfo.productContentId!"-"/>
+                <#assign listPrice = product.listPrice!0/>
+                <#assign price = product.price!0/>
+                <@productlisting product.productId product.productName imageContentId price listPrice  />
             </div>
         </#list>
     </div>
