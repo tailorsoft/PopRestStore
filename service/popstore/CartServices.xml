@@ -130,7 +130,7 @@ General Order Placement and eCommerce Usage
                     }
 
                     orderItemContent.put(orderItem.productId, ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
-                        .parameters([productId:orderItem.productId, contentTypes:['PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
+                        .parameters([productId:orderItem.productId, contentTypes:['PcntAddToCartImage', 'PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
                         .call().productContent);
                 }
             ]]></script>
