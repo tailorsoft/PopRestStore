@@ -4,7 +4,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="single-footer-widget">
                         <div class="logo">
-                            <a href="/store/"><img src="/store/zizistore/logo.svg" alt="logo" width="167" height="32"></a>
+                            <a href="/store/"><img src="/store/zizistore/img/logo.svg" alt="logo" width="167" height="32"></a>
                         </div>
 
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.</p>
@@ -44,7 +44,7 @@
                         <ul class="footer-contact-info">
                             <li><i class="fas fa-map-marker-alt"></i> Location: 2750 Quadra Street Victoria, Canada</li>
                             <li><i class="fas fa-phone"></i> Call Us: <a href="#">(+123) 456-7898</a></li>
-                            <li><i class="far fa-envelope"></i> Email Us: <a href="#">support@bolster.com</a></li>
+                            <li><i class="far fa-envelope"></i> Email Us: <a href="#">support@moqui.com</a></li>
                             <li><i class="fas fa-fax"></i> Fax: <a href="#">+123456</a></li>
                         </ul>
                     </div>
