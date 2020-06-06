@@ -129,9 +129,14 @@ General Order Placement and eCommerce Usage
                                 orderItemList.indexMatching([orderItemSeqId:orderItem.parentItemSeqId])+1)
                     }
 
-                    orderItemContent.put(orderItem.productId, ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
-                        .parameters([productId:orderItem.productId, contentTypes:['PcntAddToCartImage', 'PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']])
-                        .call().productContent);
+                    if (orderItem.itemTypeEnumId == 'ItemProduct') {
+                        Map response = ec.service.sync().name('popstore.ProductServices.get#ProductContentCascading')
+                            .parameters([productId:orderItem.productId, contentTypes:['PcntAddToCartImage', 'PcntImageSmall', 'PcntImageMedium', 'PcntImageLarge']]).call();
+
+                        if (response && response.productContent) {
+                            orderItemContent.put(orderItem.productId, response.productContent)
+                        }
+                    }
                 }
             ]]></script>
 

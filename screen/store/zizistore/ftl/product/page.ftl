@@ -5,6 +5,7 @@
         <div class="container">
             <ul>
                 <li><a href="/store">Home</a></li>
+                <li><a href="/store/category/all">Shop</a></li>
                 <li>${product.productName}</li>
             </ul>
         </div>
