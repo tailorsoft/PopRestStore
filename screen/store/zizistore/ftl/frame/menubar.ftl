@@ -14,7 +14,7 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-md navbar-light">
                         <a class="navbar-brand" href="/store/">
-                            <img src="/store/zizistore/logo.svg" alt="logo" width="167" height="32">
+                            <img src="/store/zizistore/img/logo.svg" alt="logo" width="167" height="32">
                         </a>
 
                         <b-collapse class="collapse navbar-collapse" id="navbarSupportedContent" is-nav>

@@ -14,9 +14,9 @@
     <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
 
 
-    <link rel="stylesheet" href="/store/zizistore/styles.css">
-    <link rel="stylesheet" href="/store/zizistore/responsive.css">
-    <link rel="shortcut icon" href="/store/zizistore/favicon.ico">
+    <link rel="stylesheet" href="/store/zizistore/css/styles.css">
+    <link rel="stylesheet" href="/store/zizistore/css/responsive.css">
+    <link rel="shortcut icon" href="/store/zizistore/img/favicon.ico">
 </head>
 
 <body>
