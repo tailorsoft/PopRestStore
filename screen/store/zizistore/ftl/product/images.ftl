@@ -18,12 +18,12 @@
     $(function() {
         // this is to avoid the flicker as the hash changes
         setTimeout(function() {
-          var [color, size] = window.location.hash.replace('#', '').split('/');
-          updateFromValues(color, size);
+          var color = window.location.hash.replace('#', '');
+          showImagesForColor(color);
 
           $( window ).on( 'hashchange', function( e ) {
-              [color, size] = window.location.hash.replace('#', '').split('/');
-              updateFromValues(color, size);
+              color = window.location.hash.replace('#', '');
+              showImagesForColor(color);
           });
         
         }, 100)
@@ -31,20 +31,12 @@
 
         
 
-        function updateFromValues(color, size) {
-          console.log("updateFromValues:", color, size)
+        function showImagesForColor(color) {
+          console.log("showImagesForColor:", color)
+          // first remove the current images/indicators
           $('.product-images .carousel-indicators').empty();
           $('.product-images .carousel-inner').empty();
-          addImagesForColor(color);
 
-          console.log("#####", $('.product-images .carousel-inner').children().length)
-          if ($('.product-images .carousel-inner').children().length == 0) {
-
-            addImagesForColor();
-          }
-        }
-
-        function addImagesForColor(color) {
           var count = 0;
           for(var content of contentList) {
             if (content.productFeatureId == color && content.productContentTypeEnumId == 'PcntImageLarge') {

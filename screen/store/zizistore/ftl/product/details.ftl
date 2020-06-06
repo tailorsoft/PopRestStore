@@ -75,7 +75,7 @@ variants : {
 
 
     <div class="col-lg-6 col-md-6">
-        <form class="product-details-content" method="post" action="/store/product/addToCart">
+        <form class="product-details-content" name="cart-form" method="post" action="/store/product/addToCart">
             <h3>${product.productName}</h3>
 
             <div class="price">
@@ -139,7 +139,7 @@ variants : {
                 <a href="#" class="btn btn-light"><i class="far fa-heart"></i> Add to Wishlist</a>
             </div>
             <input type="hidden" value="${ec.web.sessionToken}" name="moquiSessionToken" id="moquiSessionToken">
-            <input type="hidden" name="productId" value="DEMO_USB32G" />
+            <input type="hidden" name="productId" value="" />
             <input type="hidden" name="currencyUomId" value="USD" />
             <input type="hidden" name="quantity" value="0" />
         </form>
@@ -159,82 +159,68 @@ variants : {
     var cart = ${ Static["groovy.json.JsonOutput"].toJson(cart) };
 
     $(function() {
-        var color = "";
-        var size = "";
         var quantity = 1;
-
-        if (window.location.hash) {
-            if (window.location.hash.indexOf("/") > 0) {
-                [color, size] = window.location.hash.replace('#', '').split('/');
-            } else {
-                size = window.location.hash.replace('#', '');
-            }
-        }
-        
+        var defaultColor = getDefaultColor();
 
         $( window ).on( 'hashchange', function( e ) {
-            [color, size] = window.location.hash.replace('#', '').split('/');
-            updateFromValues(color, size);
+            var color = getColorFromHash();
+            showValuesForColor(color);
         });
 
-        if (valuesAreValid(color, size)) {
-            updateFromValues(color, size);
+        if (window.location.hash) {
+            var color = getColorFromHash();
+            showValuesForColor(color);
+        } else if(defaultColor) {
+            window.location.hash = defaultColor;
+        } else if (Object.keys(variantsMap).length == 0) {
+            updateCartButtons(productId); // This product has no variants
         } else {
-            var defaultHash = getDefaultHash();
-            if (defaultHash) {
-                window.location.hash = defaultHash;
-            } else if (Object.keys(variantsMap).length == 0) {
-                updateCartButtons(productId); // This product has no variants
-            } else {
-                $(".product-add-to-cart").hide();
-            }
+            $(".product-add-to-cart").hide();
         }
 
-        function valuesAreValid(color, size) {
-            return color && size && variantsMap[color] && variantsMap[color][size] && variantsMap[color][size].quantity > 0
+        function getColorFromHash() {
+            return window.location.hash.replace('#', '');
         }
 
-        function getDefaultHash() {
-            var colors = Object.keys(variantsMap);
-            var middleColor = colors[Math.round((colors.length - 1) / 2)];
-            var color = getNextAvailableColor(middleColor);
-
-            // no colors have available inventory
-            if (!color) return;
-
-            var sizes = Object.keys(variantsMap[color])
-            var middleSize = sizes[Math.round((sizes.length - 1) / 2)];
-            var size = getNextAvailableSize(color, middleSize);
-
-            return color + "/" + size;
+        function getDefaultColor() {
+            return Object.keys(variantsMap)[0];
         }
 
-        function updateHash() {
-            if (color && size)
-                window.location.hash = color+"/"+size;
-            else if (color)
-                window.location.hash = color;
+        function updateHash(color) {
+            window.location.hash = color;
         }
 
-        function updateFromValues(color, size) {
+        function showValuesForColor(color) {
             $(".product-color-switch").find('li').removeClass("active");
             $('.product-color-switch a[data-color=' + color + ']').parent().addClass("active");
 
             $(".product-size-wrapper").find('a').removeClass("active");
-            if (color && size && variantsMap[color][size].quantity > 0) {
-                // update the size selector to reflect the users choice
-                $('.product-size-wrapper a[data-size=' + size + ']').addClass("active");
+            $('input[name="productId"]').val('');
 
-                // populate the productId in the hidden input 
-                var variant = variantsMap[color][size];
-                $('input[name="productId"]').val(variant.productId);
+            updateSizesInStock(color);
+        }
 
-                updateCartButtons(variant.productId)
+        function updateSizesInStock(color) {
+            var isAvailable = false;
+            $(".product-size-wrapper").find('a').each(function( index ) {
+              var s = $(this).data("size");
+              var p = variantsMap[color][s];
+              if (p.quantity > 0) {
+                isAvailable = true;
+                $(this).addClass("available");
+              } else {
+                $(this).removeClass("available");
+              }
+            });
+
+            // if no sizes have  quantity, hide the submit button
+            console.log("isAvailable:",isAvailable)
+            if (isAvailable) {
                 $(".product-add-to-cart").show();
+                updateCartButtons();
             } else {
                 $(".product-add-to-cart").hide();
             }
-            updateSizesInStock();
         }
 
         function updateCartButtons(productId) {
@@ -265,65 +251,27 @@ variants : {
             $('input[name="quantity"]').val(val);
         }
 
-        function updateSizesInStock() {
-            $(".product-size-wrapper").find('a').each(function( index ) {
-              var s = $(this).data("size");
-              var p = variantsMap[color][s];
-              if (p.quantity > 0)
-                $(this).addClass("available");
-              else 
-                $(this).removeClass("available");
-            });
-        }
+
 
         $(".product-color-switch a").click(function(e) {
             e.preventDefault();
-            color = $(this).data("color");
-            size = getNextAvailableSize(color, size);
-            updateHash();
+            updateHash($(this).data("color"));
         });
 
-        function getNextAvailableColor(color, size) {
-            // If a size with quantity is found for this color
-            if(getNextAvailableSize(color, size)) return color;
-
-            var colors = Object.keys(variantsMap)
-            for(var c of colors) {
-                if(getNextAvailableSize(c, size)) return c;
-            }
-
-            return "";
-        }
-
-        function getNextAvailableSize(color, size) {
-            var colorMap = variantsMap[color];
-            if(size && colorMap[size].quantity > 0) return size;
-
-            if (!colorMap) return;
-
-            var sizes = Object.keys(colorMap)
-            for(var s of sizes) {
-                if(colorMap[s].quantity > 0) return s;
-            }
-
-            return;
-        }
 
         $(".product-size-wrapper a").click(function(e) {
+            var color = getColorFromHash();
             e.preventDefault();
             if ($(this).hasClass("available")){
-                size = $(this).data("size");
-                updateHash();
+                var size = $(this).data("size");
+                var variant = variantsMap[color][size];
+                $('input[name="productId"]').val(variant.productId);
+                updateCartButtons(variant.productId);
             } else {
                 $('.toast').html("No product in stock for "+$(this).data("size"))
                 $('.toast').toast('show');
             }
         });
-
-        $(window).on('hashchange', function() {
-          console.log("window.location.hash: ", window.location.hash)
-        });
-        
 
         $(".plus-btn").click(function() {
             if(quantity > 9){
@@ -344,6 +292,15 @@ variants : {
             }
             updateQuantity(quantity);
         });
+
+        $("form[name='cart-form']").submit(function(e){
+            var productId = $('input[name="productId"]').val();
+            if (!productId || productId == "") {
+                $('.toast').html("Please select a size")
+                $('.toast').toast('show');
+                return false;
+            }
+        })
 
         
         
