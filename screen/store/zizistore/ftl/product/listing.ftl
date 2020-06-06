@@ -13,10 +13,6 @@
                             src="/store/assets/default.png"
                             alt="Product Image">
                     </#if>
-
-
-                    <img :src="product.image" :alt="product.name">
-                    <img :src="product.imageHover" :alt="product.name">
                 </a>
 
                 <ul>
@@ -49,8 +45,6 @@
                         </a>
                     </li>
                 </ul>
-                
-                <Timer v-if="product.timePeriod" v-bind:dateTime="product.dateTime"></Timer>
             </div>
 
             <div class="product-content">

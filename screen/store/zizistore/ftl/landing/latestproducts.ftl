@@ -3,7 +3,8 @@
 <#if storeInfo.categoryByType.PsctNewProducts?has_content>
     <#assign category = storeInfo.categoryByType.PsctNewProducts >
     <#assign products = ec.service.sync().name("popstore.ProductServices.get#CategoryProducts")
-        .parameter("productCategoryId", category.productCategoryId).parameter("pageSize", 8).call()>
+        .parameter("productStoreId", productStore.productStoreId).parameter("productCategoryId", category.productCategoryId)
+        .parameter("pageSize", 8).call()>
     <div>
         <!-- Start All Products Area -->
         <section class="all-products-area pb-60">
