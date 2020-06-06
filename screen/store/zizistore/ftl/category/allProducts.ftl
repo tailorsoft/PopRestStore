@@ -39,7 +39,7 @@
     </div>
 
     <div id="products-filter" class="products-collections-listing row">
-        <#list products.productList as product>
+        <#list productList as product>
             <div class="col-lg-6 col-md-6 products-col-item">
                 <#assign mediumImageInfo = product.mediumImageInfo!{}/>
                 <#assign imageContentId = mediumImageInfo.productContentId!"-"/>
@@ -50,16 +50,19 @@
         </#list>
     </div>
 
-    <nav class="woocommerce-pagination">
+    <nav class="products-pagination">
         <ul>
-            <li><a href="#" class="page-numbers">1</a></li>
-            <li><span class="page-numbers current">2</span></li>
-            <li><a href="#" class="page-numbers">3</a></li>
-            <li><a href="#" class="page-numbers">4</a></li>
-            <li><span class="page-numbers dots">…</span></li>
-            <li><a href="#" class="page-numbers">11</a></li>
-            <li><a href="#" class="page-numbers">12</a></li>
-            <li><a href="#" class="next page-numbers"><i class="fas fa-chevron-right"></i></a></li>
+            <#if productListPageIndex gt 0>
+                <li><a href="/store/category/all/${productListPageIndex-1}" class="prev page-numbers"><i class="fas fa-chevron-left"></i></a></li>
+            </#if>
+            <#list 0..productListPageCount-1 as page>
+                <#assign currentClass = ''/>
+                <#if page == productListPageIndex><#assign currentClass = 'current'/></#if>
+                <li><a href="/store/category/all/${page}" class="page-numbers ${currentClass}">${page+1}</a></li>
+            </#list>
+            <#if productListPageIndex lt productListPageCount-1>
+                <li><a href="/store/category/all/${productListPageIndex+1}" class="next page-numbers"><i class="fas fa-chevron-right"></i></a></li>
+            </#if>
         </ul>
     </nav>
 

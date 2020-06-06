@@ -5446,7 +5446,7 @@ Products Collections Area CSS
 	width: 100%;
 }
 
-.products-collections-area .woocommerce-pagination {
+.products-collections-area .products-pagination {
 	margin-bottom: 30px;
 }
 
@@ -8557,24 +8557,24 @@ Customer Service Area CSS
 /*================================================
 Pagination CSS
 =================================================*/
-.woocommerce-pagination {
+.products-pagination {
 	text-align: center;
 	margin-top: 10px;
 }
 
-.woocommerce-pagination ul {
+.products-pagination ul {
 	padding-left: 0;
 	margin-bottom: 0;
 	list-style-type: none;
 }
 
-.woocommerce-pagination ul li {
+.products-pagination ul li {
 	display: inline-block;
 	margin-left: 1px;
 	margin-right: 1px;
 }
 
-.woocommerce-pagination ul li .page-numbers {
+.products-pagination ul li .page-numbers {
 	display: inline-block;
 	width: 35px;
 	line-height: 35px;
@@ -8586,13 +8586,13 @@ Pagination CSS
 	font-weight: 600;
 }
 
-.woocommerce-pagination ul li .page-numbers.dots {
+.products-pagination ul li .page-numbers.dots {
 	border-color: #666666 !important;
 	background-color: transparent !important;
 	color: #666666 !important;
 }
 
-.woocommerce-pagination ul li .page-numbers:hover, .woocommerce-pagination ul li .page-numbers.current {
+.products-pagination ul li .page-numbers:hover, .products-pagination ul li .page-numbers.current {
 	background-color: #222222;
 	color: #ffffff;
 	border-color: #222222;
