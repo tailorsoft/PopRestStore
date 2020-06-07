@@ -41,9 +41,15 @@
                             </ul>
 
                             <div class="others-option">
+                                <#if partyDetail??>
+                                <div class="option-item">
+                                    <a href="/store/d#/account">${partyDetail.firstName!''} ${partyDetail.lastName!''}</a>
+                                </div>
+                                <#else>
                                 <div class="option-item">
                                     <a href="/store/d#/login">Login</a>
                                 </div>
+                                </#if>
                                 <div class="option-item">
                                     <a href="#" data-toggle="modal" data-target="#shoppingCartModal">
                                         Cart(${cartQuantity}) <i class="fas fa-shopping-bag"></i>
