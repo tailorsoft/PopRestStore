@@ -211,6 +211,7 @@ storeComps.CheckOutPage = {
                     }
 
                     this.productsInCart = data;
+                    console.log(this.productsInCart)
                     // Notify vue of property change
                     this.$set(this.productsInCart, 'orderItemList', this.productsInCart.orderItemList);
                     this.setShippingItemPrice();
@@ -509,7 +510,7 @@ storeComps.SuccessCheckOut = {
 
 storeComps.CheckoutMessages = {
     name: "checkout-messages",
-    props: { itemList: Array, address: Object }
+    props: { productTotal: Number, itemList: Array, address: Object }
 };
 
 storeComps.SuccessCheckOutTemplate = getPlaceholderRoute("template_client_checkoutSuccess", "SuccessCheckOut");
