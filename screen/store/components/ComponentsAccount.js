@@ -104,7 +104,16 @@ storeComps.LoginPage = {
         },
         showModal: function(modalId) { $('#'+modalId).modal('show'); },
     },
-    mounted: function() { if (this.$root.apiKey != null) { this.$router.push({ name: "account"}) }},
+    mounted: function() {
+        if (this.$root.apiKey != null) {
+            if(localStorage.redirect == 'checkout'){
+                localStorage.removeItem("redirect");
+                this.$router.push({ name: 'checkout'});
+            }else{
+                this.$router.push({ name: 'account'}); 
+            }
+        }
+    },
 };
 storeComps.LoginPageTemplate = getPlaceholderRoute("template_client_login", "LoginPage");
 
@@ -197,7 +206,12 @@ storeComps.AccountPage = {
         getCustomerAddresses: function() { CustomerService.getShippingAddresses(this.axiosConfig)
             .then(function (data) { this.shippingAddressList = data.postalAddressList; }.bind(this)); },
         getCustomerPaymentMethods: function() { CustomerService.getPaymentMethods(this.axiosConfig)
-            .then(function (data) { this.customerPaymentMethods = data.methodInfoList; }.bind(this)); },
+            .then(function (data) { 
+                this.customerPaymentMethods = data.methodInfoList.filter(function (method) {
+                    return method.isCreditCard
+                }); 
+            }.bind(this)); 
+        },
 
         resetData: function() {
             this.paymentMethod = {};
