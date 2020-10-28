@@ -241,6 +241,7 @@ storeComps.AccountPage = {
                 this.setCustomerInfo(data.customerInfo);
                 this.message.state = 1;
                 this.message.message = "Correct! Your data has been updated.";
+                this.$root.$emit("updateAccountSuccessful", this.customerInfo.emailAddress, this.customerInfo.firstName.trim(), this.customerInfo.lastName.trim());
             }.bind(this));
         },
         setCustomerInfo: function(data) {
@@ -430,6 +431,7 @@ storeComps.CreateAccountPage = {
             this.accountInfo.newPasswordVerify = this.confirmPassword;
 
             LoginService.createAccount(this.accountInfo, this.axiosConfig).then(function (data) {
+                this.$root.$emit("createAccountSuccessful", this.accountInfo.emailAddress, this.accountInfo.firstName.trim(), this.accountInfo.lastName.trim());
                 this.login(this.accountInfo.emailAddress, this.accountInfo.newPassword);
             }.bind(this)).catch(function (error) {
                 if(!!error.response && !!error.response.headers){

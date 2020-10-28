@@ -53,4 +53,7 @@ along with this software (see the LICENSE.md file). If not, see
 
     <!-- store setting used for dynamically setting the productStoreId depending on the hostname -->
     <moqui.basic.Enumeration enumCode="product_store_id_from_hostname" description="Product Store ID From Hostname" enumId="PsstHostname" enumTypeId="ProductStoreSettingType"/>
+    
+    <!-- store setting  used to add a js file that allows creating components and adding them to the vue instance in the main-->
+    <moqui.basic.Enumeration enumCode="custom_component_creator" description="Custom Component Creator" enumId="PsstCustomComponentCreator" enumTypeId="ProductStoreSettingType"/>
 </entity-facade-xml>

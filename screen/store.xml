@@ -22,6 +22,7 @@ along with this software (see the LICENSE.md file). If not, see
         <service-call name="popstore.StoreServices.get#StoreInfo" in-map="[productStoreId:productStoreId]" out-map="storeInfo"/>
         <set field="productStore" from="storeInfo.productStore"/>
         <set field="wikiSpaceId" from="productStore?.wikiSpaceId"/>
+        <set field="customComponentCreator" from="storeInfo.settings.custom_component_creator"/>
 
         <if condition="ec.user.userId">
             <entity-find-one entity-name="mantle.party.PartyDetail" value-field="partyDetail">
